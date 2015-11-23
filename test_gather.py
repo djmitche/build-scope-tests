@@ -27,22 +27,22 @@ def setTestRoles(roles):
 
 def test_no_match():
     setTestRoles({'rr': ['bar']})
-    eq_(gather.TaskCluster().principalsWithScope('foo'), [])
+    eq_(gather.TaskCluster().principalsWithScope('foo'), set())
 
 def test_straight_match():
     setTestRoles({'r1': ['foo', 'bar'], 'r2': ['foo', 'bing'], 'r3': ['baz']})
-    eq_(sorted(gather.TaskCluster().principalsWithScope('foo')), sorted(['r1', 'r2']))
+    eq_(gather.TaskCluster().principalsWithScope('foo'), set(['r1', 'r2']))
 
 def test_star_in_role():
     setTestRoles({'r1': ['create:*'], 'r2': ['create:foo'], 'r3': ['create:bar']})
-    eq_(sorted(gather.TaskCluster().principalsWithScope('create:bar')), sorted(['r1', 'r3']))
+    eq_(gather.TaskCluster().principalsWithScope('create:bar'), set(['r1', 'r3']))
 
 def test_star_in_scope():
     setTestRoles({'r1': ['create:*'], 'r2': ['create:foo'], 'r3': ['create:bar']})
-    eq_(sorted(gather.TaskCluster().principalsWithScope('create:*')), sorted(['r1', 'r2', 'r3']))
+    eq_(gather.TaskCluster().principalsWithScope('create:*'), set(['r1', 'r2', 'r3']))
 
 def test_star_in_both():
     setTestRoles({'r1': ['cr*'], 'r2': ['create:*'], 'r3': ['create:foo']})
-    eq_(sorted(gather.TaskCluster().principalsWithScope('create:*')), sorted(['r1', 'r2', 'r3']))
+    eq_(gather.TaskCluster().principalsWithScope('create:*'), set(['r1', 'r2', 'r3']))
 
 # TODO: inaccurate expandedScopes for star roles?
