@@ -2,6 +2,7 @@
 Common support code for scope tests
 """
 
+import itertools
 import gather
 import difflib
 
@@ -58,14 +59,39 @@ _trusted_clients = set([
     'client-id:taskcluster-hooks',
 ])
 
+# flatten down to a list of strings
+def _flatten(l):
+    def iter(l):
+        if isinstance(l, basestring):
+            return [l]
+        else:
+            return _flatten(l)
+    return list(itertools.chain.from_iterable(iter(e) for e in l))
+
 def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
     got = _nicer(roles.principalsWithScope(scope))
     if omitTrusted:
         got -= _trusted_clients
-    exp = set(principals)
+    exp = set(_flatten(principals))
     if got != exp:
         diff = difflib.unified_diff(sorted(exp), sorted(got), lineterm="")
         raise AssertionError(
                 "Got (+) a principal set different from expected (-):\n" +
                 "\n".join(diff))
 
+
+permacreds = set([
+    'client-id-alias:permacred-bhearsum',
+    'client-id-alias:permacred-dustin',
+    'client-id-alias:permacred-garndt',
+    'client-id-alias:permacred-jhford',
+    'client-id-alias:permacred-jlund',
+    'client-id-alias:permacred-jonasfj',
+    'client-id-alias:permacred-mrrrgn',
+    'client-id-alias:permacred-mshal',
+    'client-id-alias:permacred-pmoore',
+    'client-id-alias:permacred-rail',
+    'client-id-alias:permacred-rthijssen',
+    'client-id-alias:permacred-selena',
+    'client-id-alias:permacred-wcosta',
+])
