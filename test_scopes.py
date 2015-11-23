@@ -2,18 +2,19 @@
 Tests for scopes.
 """
 
-from common import *
+from common import assertPrincipalsWithScope
 
 def test_signing():
     assertPrincipalsWithScope("signing:*", [
+        # root
+        'client-id:root',
+
         # services
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
-        'client-id-alias:index-taskcluster-net',
         'client-id-alias:release-runner-dev',
         'client-id:tc-login',
         'client-id:tc-queue',
-        'client-id:root',
         'client-id-alias:scheduler-taskcluster-net',
 
         # perma-creds
@@ -35,4 +36,4 @@ def test_signing():
         'mozilla-group:releng',
         'mozilla-group:team_relops',
         'mozilla-group:team_taskcluster',
-    ])
+    ], omitTrusted=True)
