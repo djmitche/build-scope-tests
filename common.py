@@ -37,8 +37,31 @@ _nice_names = {
 def _nicer(principals):
     return set(_nice_names.get(p, p) for p in principals)
 
-def assertPrincipalsWithScope(scope, principals):
+# trusted clients are relied on to perform actions on behalf of clients using
+# temporary credentials or assumeScopes built from roles.  We treat the roles
+# as principals and thus ignore the services implementing those roles.  Note
+# that services which assign specific scopes, rather than roles, should NOT be
+# listed here and must be handled directly in the tests.
+_trusted_clients = set([
+    # uses role `repo:hg.mozilla.org/$repo:*`
+    'client-id-alias:mozilla-taskcluster',
+
+    # uses roles `repo:github.com/$org/$repo:branch:$branch`
+    # and `repo:github.com/$org/$repo:pull-request`
+    'client-id-alias:gaia-taskcluster',
+    'client-id-alias:gaia-taskcluster-dev',
+
+    # uses role `repo:github.com/$org/$repo:pull-request`
+    'client-id-alias:taskcluster-github',
+
+    # uses role `hook-id:$hookId`
+    'client-id:taskcluster-hooks',
+])
+
+def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
     got = _nicer(roles.principalsWithScope(scope))
+    if omitTrusted:
+        got -= _trusted_clients
     exp = set(principals)
     if got != exp:
         diff = difflib.unified_diff(sorted(exp), sorted(got), lineterm="")
