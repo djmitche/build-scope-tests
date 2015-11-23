@@ -1,0 +1,6 @@
+sudo: false
+language: python
+install:
+    pip install nose taskcluster
+
+script: nosetests
