@@ -10,6 +10,7 @@ roles = gather.TaskCluster()
 # convert principals to "nice" names; TODO: all of these should be renamed
 # upstream
 _nice_names = {
+    'client-id:-69R5nFgQhmFalR2J3y9pA': 'client-id-alias:mozilla-taskcluster',
     'client-id:HHb6HtDwQaS3dGdaa_j0ow': 'client-id-alias:funsize-scheduler',
     'client-id:MC7GCZfURkCGO8rS9KxgTg': 'client-id-alias:permacred-wcosta',
     'client-id:09tML-c8Tf6pYehxK8Rrpw': 'client-id-alias:permacred-bhearsum',
@@ -31,6 +32,7 @@ _nice_names = {
     'client-id:xPK1XrauRn6v2QNMMIAOKg': 'client-id-alias:funsize-dev',
     'client-id:yMbwoZvhRout3T_Fr7h4Ng': 'client-id-alias:index-taskcluster-net',
     'client-id:kd-b_FdrSJ-4Gr3FF4IOpA': 'client-id-alias:gaia-taskcluster',
+    'clietn-id:O6yB_zofTjCAjPSu4iYKoA': 'client-id-alias:taskcluster-github',
 }
 def _nicer(principals):
     return set(_nice_names.get(p, p) for p in principals)
