@@ -11,7 +11,15 @@ roles = gather.TaskCluster()
 # convert principals to "nice" names; TODO: all of these should be renamed
 # upstream
 _nice_names = {
-    'client-id:-69R5nFgQhmFalR2J3y9pA': 'client-id-alias:mozilla-taskcluster',
+    'client-id:QUUeaAazTAmU6F3Sc29zvQ': 'client-id-alias:permacred-armenzg-testing',
+    'client-id:yHLBn3GaTY-SYhTnKw3X-Q': 'client-id-alias:temporary-credentials',
+    'client-id:xMWxCdJpSriDz7zp7uFo8Q': 'client-id-alias:permacred-armenzg',
+    'client-id:onvEnjW7Su6-53I7UhfCdg': 'client-id-alias:permacred-ted',
+    'client-id:v9h-Fo_fQ3yq_-MeH6dP6w': 'client-id-alias:worker-ci-tests',
+    'client-id:wQjAUsPgQ-OKuU8RWsz8tg': 'client-id-alias:permacred-nhirata',
+    'client-id:XsQX5VRnSCi_gG1Fbby0AQ': 'client-id-alias:testdroid-worker',
+    'client-id:eIy6aszeRQirIPOMwtOtqQ': 'client-id-alias:mozilla-taskcluster',
+    'client-id:-69R5nFgQhmFalR2J3y9pA': 'client-id-alias:mozilla-taskcluster-ci',
     'client-id:HHb6HtDwQaS3dGdaa_j0ow': 'client-id-alias:funsize-scheduler',
     'client-id:MC7GCZfURkCGO8rS9KxgTg': 'client-id-alias:permacred-wcosta',
     'client-id:09tML-c8Tf6pYehxK8Rrpw': 'client-id-alias:permacred-bhearsum',
@@ -80,18 +88,21 @@ def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
                 "\n".join(diff))
 
 
-permacreds = set([
-    'client-id-alias:permacred-bhearsum',
-    'client-id-alias:permacred-dustin',
+taskcluster_permacreds = set([
     'client-id-alias:permacred-garndt',
     'client-id-alias:permacred-jhford',
+    'client-id-alias:permacred-selena',
+    'client-id-alias:permacred-wcosta',
+    'client-id-alias:permacred-pmoore',
+])
+
+releng_permacreds = set([
+    'client-id-alias:permacred-bhearsum',
+    'client-id-alias:permacred-dustin',
     'client-id-alias:permacred-jlund',
     'client-id-alias:permacred-jonasfj',
     'client-id-alias:permacred-mrrrgn',
     'client-id-alias:permacred-mshal',
-    'client-id-alias:permacred-pmoore',
     'client-id-alias:permacred-rail',
     'client-id-alias:permacred-rthijssen',
-    'client-id-alias:permacred-selena',
-    'client-id-alias:permacred-wcosta',
 ])
