@@ -91,6 +91,7 @@ def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
 taskcluster_permacreds = set([
     'client-id-alias:permacred-garndt',
     'client-id-alias:permacred-jhford',
+    'client-id-alias:permacred-jonasfj',
     'client-id-alias:permacred-selena',
     'client-id-alias:permacred-wcosta',
     'client-id-alias:permacred-pmoore',
@@ -100,7 +101,6 @@ releng_permacreds = set([
     'client-id-alias:permacred-bhearsum',
     'client-id-alias:permacred-dustin',
     'client-id-alias:permacred-jlund',
-    'client-id-alias:permacred-jonasfj',
     'client-id-alias:permacred-mrrrgn',
     'client-id-alias:permacred-mshal',
     'client-id-alias:permacred-rail',
