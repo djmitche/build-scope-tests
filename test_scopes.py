@@ -1,5 +1,8 @@
 """
-Tests for scopes.
+Tests for scopes of interest to Release Engineering.
+
+The idea is to know exactly who has which sorts of scopes, and detect any
+changes in those lists.
 """
 
 from common import assertPrincipalsWithScope
@@ -15,9 +18,7 @@ def test_signing():
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id:tc-login',
-        'client-id:tc-queue',
-        'client-id-alias:scheduler-taskcluster-net',
+        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
 
         # people
         releng_permacreds,
@@ -37,9 +38,7 @@ def test_bbb():
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id:tc-login',
-        'client-id:tc-queue',
-        'client-id-alias:scheduler-taskcluster-net',
+        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
 
         # people
         releng_permacreds,
@@ -53,16 +52,16 @@ def test_bbb():
 
 
 def test_bbb_tasks():
-    # TODO: worker-type for bbb
+    """Buildbot Bridge (BBB) allows Buildbot jobs to be run via a TaskCluster
+    task.  Most BBB tasks run without the need for additional scopes, but some
+    more sensitive builders are restricted by `buildbot-bridge:..` scopes.  """
     assertPrincipalsWithScope("buildbot-bridge:*", [
         # root
         'client-id:root',
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id:tc-login',
-        'client-id:tc-queue',
-        'client-id-alias:scheduler-taskcluster-net',
+        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
 
         # people
         releng_permacreds,
@@ -74,9 +73,42 @@ def test_bbb_tasks():
         'mozilla-group:team_taskcluster',
     ], omitTrusted=True)
 
+def test_bbb_worker():
+    """Access to the Buildbot Bridge provisioner-id/worker-type allows
+    scheduling of BBB jobs (but only on non-restricted builders unless there
+    more scopes are also present)."""
+    assertPrincipalsWithScope("queue:define-task:buildbot-bridge/*", [
+        # root
+        'client-id:root',
 
-def test_balrog():
-    # TODO: https://bugzilla.mozilla.org/show_bug.cgi?id=1220692
+        # services
+        'client-id-alias:funsize-dev',
+        'client-id-alias:funsize-scheduler',
+        'client-id-alias:release-runner-dev',
+        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+
+        'client-id-alias:mozilla-pulse-actions',  # armen's thing
+        'client-id:bbb-scheduler',
+
+        # people
+        releng_permacreds,
+        taskcluster_permacreds,
+        'client-id:adusca-development',
+
+        # user groups
+        'mozilla-group:releng',
+        'mozilla-group:team_relops',
+        'mozilla-group:team_taskcluster',
+    ], omitTrusted=True)
+
+
+def test_balrog_vpn():
+    """Balrog is the administrative interface for Mozilla's update server, and
+    automation uses it to publish information about new updates for download by
+    end-users' updaters.  The BalrogVpnProxy docker-worker feature allows
+    *network* access to Balrog.  It does not include any Balrog credentials.
+    As such, it is but one layer of access control protecting Balrog, and is
+    distributed a little more broadly than full access would be."""
     assertPrincipalsWithScope("docker-worker:feature:balrogVPNProxy", [
         # root
         'client-id:root',
@@ -100,13 +132,11 @@ def test_balrog():
         'client-id-alias:testdroid-worker', # XXX ??
 
         # services
-        'client-id-alias:release-runner-dev',
-        'client-id:tc-login',
-        'client-id:tc-queue',
-        'client-id-alias:scheduler-taskcluster-net',
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
-        'client-id:aws-provisioner',
+        'client-id-alias:release-runner-dev',
+        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+        'client-id:aws-provisioner',  # XXX ??
 
         # people
         releng_permacreds,
@@ -115,7 +145,7 @@ def test_balrog():
         'client-id-alias:permacred-armenzg-testing',
         'client-id-alias:permacred-nhirata',
         'client-id-alias:permacred-ted',
-        'client-id-alias:temporary-credentials',
+        'client-id-alias:temporary-credentials',  # XXX will go away
         'client-id:gandalf',
 
         # user groups
@@ -129,3 +159,4 @@ def test_balrog():
 # TODO: queue:create-task:prov/wt
 # TODO: queue:get-artifact:project/releng/*
 # TODO: releng routes
+# TODO: (new file?) auth stuff

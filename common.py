@@ -41,7 +41,8 @@ _nice_names = {
     'client-id:xPK1XrauRn6v2QNMMIAOKg': 'client-id-alias:funsize-dev',
     'client-id:yMbwoZvhRout3T_Fr7h4Ng': 'client-id-alias:index-taskcluster-net',
     'client-id:kd-b_FdrSJ-4Gr3FF4IOpA': 'client-id-alias:gaia-taskcluster',
-    'clietn-id:O6yB_zofTjCAjPSu4iYKoA': 'client-id-alias:taskcluster-github',
+    'client-id:O6yB_zofTjCAjPSu4iYKoA': 'client-id-alias:taskcluster-github',
+    'client-id:T9J-xA9JSUKQzfR99NRtMg': 'client-id-alias:mozilla-pulse-actions',
 }
 def _nicer(principals):
     return set(_nice_names.get(p, p) for p in principals)
@@ -65,6 +66,15 @@ _trusted_clients = set([
 
     # uses role `hook-id:$hookId`
     'client-id:taskcluster-hooks',
+
+    # issues temporary credentials to workers based on task.scopes, which
+    # was validated when the task was defined, allowing no scope escalation
+    # TODO: Bug 1228100
+    'client-id:tc-queue',
+
+    # issues temporary credentials to users based on their username and group
+    # membership (`mozilla-user:*` and `mozilla-group:*`)
+    'client-id:tc-login',
 ])
 
 # flatten down to a list of strings
