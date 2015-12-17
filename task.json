@@ -1,0 +1,28 @@
+{
+  "provisionerId": "aws-provisioner-v1",
+  "workerType": "b2gtest",
+  "schedulerId": "-",
+  "taskGroupId": "Vfy6u69-SYi15zOpji7uJA",
+  "routes": [],
+  "priority": "normal",
+  "retries": 5,
+  "created": "2015-12-17T18:16:45.599Z",
+  "deadline": "2015-12-17T19:16:45.599Z",
+  "expires": "2016-11-13T03:06:37.590Z",
+  "scopes": [],
+  "payload": {
+    "image": "djmitche/build-scope-tests:latest",
+    "command": [
+      "/usr/src/app/update-and-run.sh"
+    ],
+    "maxRunTime": 300
+  },
+  "metadata": {
+    "name": "build-scope-tests",
+    "description": "Run tests for TaskCluster scopes of interest to releng",
+    "owner": "dustin@mozilla.com",
+    "source": "https://github.com/mozilla/build-scope-tests"
+  },
+  "tags": {},
+  "extra": {}
+}
