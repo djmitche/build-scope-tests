@@ -6,5 +6,6 @@
 set -e
 
 cd /usr/src/app
-git pull https://github.com/mozilla/build-scope-tests master
+git fetch https://github.com/mozilla/build-scope-tests master
+git reset --hard FETCH_HEAD
 nosetests
