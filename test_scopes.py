@@ -18,7 +18,7 @@ def test_signing():
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
 
         # people
         releng_permacreds,
@@ -38,7 +38,7 @@ def test_bbb():
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
 
         # people
         releng_permacreds,
@@ -61,7 +61,7 @@ def test_bbb_tasks():
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
 
         # people
         releng_permacreds,
@@ -85,7 +85,7 @@ def test_bbb_worker():
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
 
         'client-id-alias:mozilla-pulse-actions',  # armen's thing
         'client-id:bbb-scheduler',
@@ -114,12 +114,11 @@ def test_balrog_vpn():
         'client-id:root',
 
         # CI testing
-        'client-id-alias:worker-ci-tests', # XXX ??
+        'client-id-alias:worker-ci-tests', # docker-worker integration tests
 
         # repos
         'mozilla-group:scm_level_3',
         'moz-tree:level:3',
-        'repo:*',                           # TODO: don't list this, somehow
         'repo:hg.mozilla.org/integration/b2g-inbound:*',
         'repo:hg.mozilla.org/integration/fx-team:*',
         'repo:hg.mozilla.org/integration/mozilla-inbound:*',
@@ -129,17 +128,16 @@ def test_balrog_vpn():
         'repo:hg.mozilla.org/releases/mozilla-b2g44_v2_5:*',
 
         # all AWS workers
-        'worker-type:aws-provisioner-v1/*', # XXX ??
-        'worker-type:aws-provisioner-v1/gecko-decision', # XXX ??
-        'worker-type:aws-provisioner-v1/gaia-decision', # XXX ??
-        'client-id-alias:testdroid-worker', # XXX ??
+        'worker-type:aws-provisioner-v1/gecko-decision', # Bug 1233555
+        'worker-type:aws-provisioner-v1/gaia-decision', # Bug 1233555
+        'client-id-alias:testdroid-worker', # Bug 1218549
 
         # services
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # XXX Bug 1218541
-        'client-id:aws-provisioner',  # XXX ??
+        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
+        'client-id:aws-provisioner',  # Bug 1233555
 
         # people
         releng_permacreds,
@@ -148,7 +146,7 @@ def test_balrog_vpn():
         'client-id-alias:permacred-armenzg-testing',
         'client-id-alias:permacred-nhirata',
         'client-id-alias:permacred-ted',
-        'client-id-alias:temporary-credentials',  # XXX will go away
+        'client-id-alias:temporary-credentials',  # Bug 1233553
         'client-id:gandalf',
         'client-id:dustin-docker-dev',
 
@@ -156,6 +154,10 @@ def test_balrog_vpn():
         'mozilla-group:releng',
         'mozilla-group:team_relops',
         'mozilla-group:team_taskcluster',
+
+        # Bug 1220295
+        'worker-type:aws-provisioner-v1/*',
+        'repo:*',
     ], omitTrusted=True)
 
 # TODO: relengapi-proxy
@@ -164,3 +166,4 @@ def test_balrog_vpn():
 # TODO: queue:get-artifact:project/releng/*
 # TODO: releng routes
 # TODO: (new file?) auth stuff
+# TODO: allowPtrace feature
