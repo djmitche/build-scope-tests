@@ -124,11 +124,14 @@ def test_balrog_vpn():
         'repo:hg.mozilla.org/integration/fx-team:*',
         'repo:hg.mozilla.org/integration/mozilla-inbound:*',
         'repo:hg.mozilla.org/mozilla-central:*',
+        'repo:hg.mozilla.org/releases/b2g-ota:*',
         'repo:hg.mozilla.org/releases/mozilla-b2g34_v2_1s:*',
         'repo:hg.mozilla.org/releases/mozilla-b2g44_v2_5:*',
 
         # all AWS workers
         'worker-type:aws-provisioner-v1/*', # XXX ??
+        'worker-type:aws-provisioner-v1/gecko-decision', # XXX ??
+        'worker-type:aws-provisioner-v1/gaia-decision', # XXX ??
         'client-id-alias:testdroid-worker', # XXX ??
 
         # services
@@ -147,6 +150,7 @@ def test_balrog_vpn():
         'client-id-alias:permacred-ted',
         'client-id-alias:temporary-credentials',  # XXX will go away
         'client-id:gandalf',
+        'client-id:dustin-docker-dev',
 
         # user groups
         'mozilla-group:releng',
