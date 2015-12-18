@@ -45,4 +45,15 @@ def test_star_in_both():
     setTestRoles({'r1': ['cr*'], 'r2': ['create:*'], 'r3': ['create:foo']})
     eq_(gather.TaskCluster().principalsWithScope('create:*'), set(['r1', 'r2', 'r3']))
 
+def test_scopesWithPrefix():
+    setTestRoles({
+        'r1': ['cr*'],
+        'r2': ['create:*'],
+        'r3': ['create:foo'],
+        'r4': ['crea'],  # not a *-suffixed scope
+        'r5': ['create:'],
+    })
+    eq_(gather.TaskCluster().scopesWithPrefix('create:'),
+        set(['cr*', 'create:*', 'create:foo', 'create:']))
+
 # TODO: inaccurate expandedScopes for star roles?

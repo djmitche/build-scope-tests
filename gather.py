@@ -15,6 +15,10 @@ class TaskCluster(object):
             for s in r['expandedScopes']:
                 scopes.setdefault(s, set()).add(r['roleId'])
 
+    def scopesWithPrefix(self, prefix):
+        """Return all scopes with the given prefix, or which prefix satisfies"""
+        return set(s for s in self.scopes if s.startswith(prefix) or (s.endswith('*') and prefix.startswith(s[:-1])))
+
     def principalsWithScope(self, scope):
         if scope.endswith('*'):
             scope = scope[:-1]

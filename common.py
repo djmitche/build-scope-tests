@@ -5,6 +5,9 @@ Common support code for scope tests
 import itertools
 import gather
 import difflib
+import logging
+
+log = logging.getLogger('common')
 
 roles = gather.TaskCluster()
 
@@ -43,6 +46,17 @@ _nice_names = {
     'client-id:kd-b_FdrSJ-4Gr3FF4IOpA': 'client-id-alias:gaia-taskcluster',
     'client-id:O6yB_zofTjCAjPSu4iYKoA': 'client-id-alias:taskcluster-github',
     'client-id:T9J-xA9JSUKQzfR99NRtMg': 'client-id-alias:mozilla-pulse-actions',
+    'client-id:2NTE9AF4Qq2iNp_ZXan5DA': 'client-id-alias:npark',
+    'client-id:Bx-Vfe_rSQ2HOtZQviwl_A': 'client-id-alias:sousmangoosta',
+    'client-id:JmhqKvaWTHmnxmRqoORBaA': 'client-id-alias:brson',
+    'client-id:LvhIONB6TAKCeZsbmrImrA': 'client-id-alias:gerard-majax',
+    'client-id:_XwhECl7T_WBWcOdRQFVkA': 'client-id-alias:nullaus',
+    'client-id:WX5WaEuzTwGh0Q-zpGSoWg': 'client-id-alias:rwood',
+    'client-id:gEGWgxqgRZSikNXkDr6Tbw': 'client-id-alias:kgrandon',
+    'client-id:kZ3PctbtSLml6PHw5YzTOw': 'client-id-alias:drs',
+    'client-id:l-a4R0PXR4uHijZ4i7-kgw': 'client-id-alias:shako',
+    'client-id:xu9LzAXBTRW8d3x_6Q-wCA': 'client-id-alias:mihneadb',
+    'client-id:ycAM1VLgRA-677YJBT1K1w': 'client-id-alias:russn',
 }
 def _nicer(principals):
     return set(_nice_names.get(p, p) for p in principals)
@@ -86,16 +100,37 @@ def _flatten(l):
             return _flatten(l)
     return list(itertools.chain.from_iterable(iter(e) for e in l))
 
+
+def _assertSetsMatch(got, exp, msg):
+    if got != exp:
+        diff = difflib.unified_diff(sorted(exp), sorted(got), lineterm="")
+        raise AssertionError(msg + "\n" + "\n".join(diff))
+
+
+
 def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
+    """Assert that the set of principals with the given scope is exactly as given; if
+    omitTrusted is true, then the trusted clients listed in common.py are omitted; these
+    clients are trusted pieces of TC infrastructure that carefully grant more restricted
+    permissions using roles, as described in common.py"""
     got = _nicer(roles.principalsWithScope(scope))
     if omitTrusted:
         got -= _trusted_clients
     exp = set(_flatten(principals))
-    if got != exp:
-        diff = difflib.unified_diff(sorted(exp), sorted(got), lineterm="")
-        raise AssertionError(
-                "Got (+) a principal set different from expected (-):\n" +
-                "\n".join(diff))
+    _assertSetsMatch(got, exp, "Got (+) a principal set different from expected (-):")
+
+
+def assertScopesWithPrefix(prefix, expectedScopes):
+    """Assert that exactly the given scopes exist with the given prefix.  This
+    is used to ensure that there are no scopes matching the pattern for which
+    tests are not in place."""
+    got = roles.scopesWithPrefix(prefix)
+    for g in got:
+        logging.debug('scope %s held by roles', g)
+        for s in _nicer(roles.scopes[g]):
+            logging.debug('  %s', s)
+    exp = set(expectedScopes)
+    _assertSetsMatch(got, exp, "Got (+) a scope set different from expected (-):")
 
 
 taskcluster_permacreds = set([
@@ -116,3 +151,6 @@ releng_permacreds = set([
     'client-id-alias:permacred-rail',
     'client-id-alias:permacred-rthijssen',
 ])
+
+# TODO: only look at scopes for client-id:*, not extendedScopes
+#   -> should eliminate many trusted clients, too

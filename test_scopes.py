@@ -127,7 +127,8 @@ def test_balrog_vpn():
         'repo:hg.mozilla.org/releases/mozilla-b2g34_v2_1s:*',
         'repo:hg.mozilla.org/releases/mozilla-b2g44_v2_5:*',
 
-        # all AWS workers
+        # AWS workers
+        'worker-type:aws-provisioner-v1/*', # Bug 1233555
         'worker-type:aws-provisioner-v1/gecko-decision', # Bug 1233555
         'worker-type:aws-provisioner-v1/gaia-decision', # Bug 1233555
         'client-id-alias:testdroid-worker', # Bug 1218549
@@ -156,9 +157,9 @@ def test_balrog_vpn():
         'mozilla-group:team_taskcluster',
 
         # Bug 1220295
-        'worker-type:aws-provisioner-v1/*',
         'repo:*',
     ], omitTrusted=True)
+
 
 # TODO: relengapi-proxy
 # TODO: docker-worker caches
