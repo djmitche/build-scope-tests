@@ -9,7 +9,7 @@ import logging
 
 log = logging.getLogger('common')
 
-roles = gather.TaskCluster()
+roles = gather.Roles()
 
 # convert principals to "nice" names; TODO: all of these should be renamed
 # upstream

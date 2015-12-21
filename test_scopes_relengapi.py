@@ -40,7 +40,6 @@ def test_relengapi_tooltool_download_public():
         'mozilla-group:scm_level_3',
 
         # repos
-        'repo:*',
         'repo:hg.mozilla.org/integration/b2g-inbound:*',
         'repo:hg.mozilla.org/integration/fx-team:*',
         'repo:hg.mozilla.org/integration/mozilla-inbound:*',
@@ -87,11 +86,6 @@ def test_relengapi_tooltool_download_public():
 
         # worker types
         'worker-type:aws-provisioner-v1/*', # Bug 1233555
-        'worker-type:aws-provisioner-v1/gaia-decision', # Bug 1233555
-        'worker-type:aws-provisioner-v1/gecko-decision', # Bug 1233555
-
-        # Bug 1220295
-        'repo:*',
     ], omitTrusted=True)
 
 def test_relengapi_tooltool_download_internal():
@@ -119,7 +113,6 @@ def test_relengapi_tooltool_download_internal():
         'mozilla-group:scm_level_3',
 
         # repos
-        'repo:*',
         'repo:hg.mozilla.org/integration/b2g-inbound:*',
         'repo:hg.mozilla.org/integration/fx-team:*',
         'repo:hg.mozilla.org/integration/mozilla-inbound:*',
@@ -166,11 +159,6 @@ def test_relengapi_tooltool_download_internal():
 
         # worker types
         'worker-type:aws-provisioner-v1/*', # Bug 1233555
-        'worker-type:aws-provisioner-v1/gaia-decision', # Bug 1233555
-        'worker-type:aws-provisioner-v1/gecko-decision', # Bug 1233555
-
-        # Bug 1220295
-        'repo:*',
     ], omitTrusted=True)
 
 def test_relengapi_other_perms():
