@@ -134,7 +134,6 @@ def test_balrog_vpn():
     ], omitTrusted=True)
 
 
-# TODO: relengapi-proxy
 # TODO: docker-worker caches
 # TODO: queue:create-task:prov/wt
 # TODO: queue:get-artifact:project/releng/*
