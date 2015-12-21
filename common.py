@@ -57,7 +57,10 @@ _nice_names = {
     'client-id:l-a4R0PXR4uHijZ4i7-kgw': 'client-id-alias:shako',
     'client-id:xu9LzAXBTRW8d3x_6Q-wCA': 'client-id-alias:mihneadb',
     'client-id:ycAM1VLgRA-677YJBT1K1w': 'client-id-alias:russn',
+    'client-id:7biq0sFcRqGYGJ9juATLJA': 'client-id-alias:ffledgling',
 }
+
+
 def _nicer(principals):
     return set(_nice_names.get(p, p) for p in principals)
 
@@ -92,6 +95,8 @@ _trusted_clients = set([
 ])
 
 # flatten down to a list of strings
+
+
 def _flatten(l):
     def iter(l):
         if isinstance(l, basestring):
@@ -107,17 +112,36 @@ def _assertSetsMatch(got, exp, msg):
         raise AssertionError(msg + "\n" + "\n".join(diff))
 
 
-
 def assertPrincipalsWithScope(scope, principals, omitTrusted=False):
     """Assert that the set of principals with the given scope is exactly as given; if
     omitTrusted is true, then the trusted clients listed in common.py are omitted; these
     clients are trusted pieces of TC infrastructure that carefully grant more restricted
     permissions using roles, as described in common.py"""
     got = _nicer(roles.principalsWithScope(scope))
+    exp = _nicer(set(_flatten(principals)))
     if omitTrusted:
         got -= _trusted_clients
-    exp = set(_flatten(principals))
-    _assertSetsMatch(got, exp, "Got (+) a principal set different from expected (-):")
+        exp -= _trusted_clients
+    _assertSetsMatch(
+        got, exp, "Got (+) a principal set different from expected (-):")
+
+
+def assertPrincipalsWithRole(roleId, principals, exactMatch=True, omitTrusted=False):
+    """Assert that the set of principals with the given role is exactly as
+    given; if exactMatch is true, then the role is matched exactly, so
+    principals with '*' or some prefix of the role will not be returned.  If
+    exactMatch is false this is exactly like
+    `assertPrincipalsWithScope('assume:' + roleId, principals)`."""
+    if not exactMatch:
+        return assertPrincipalsWithScope('assume:' + roleId, principals,
+                                         omitTrusted=omitTrusted)
+    got = _nicer(expandRole(roleId)) - set([roleId])
+    exp = _nicer(set(_flatten(principals)))
+    if omitTrusted:
+        got -= _trusted_clients
+        exp -= _trusted_clients
+    _assertSetsMatch(
+        got, exp, "Got (+) a principal set different from expected (-):")
 
 
 def assertScopesWithPrefix(prefix, expectedScopes):
@@ -129,28 +153,11 @@ def assertScopesWithPrefix(prefix, expectedScopes):
         logging.debug('scope %s held by roles', g)
         for s in _nicer(roles.scopes[g]):
             logging.debug('  %s', s)
-    exp = set(expectedScopes)
-    _assertSetsMatch(got, exp, "Got (+) a scope set different from expected (-):")
+    exp = _nicer(set(expectedScopes))
+    _assertSetsMatch(
+        got, exp, "Got (+) a scope set different from expected (-):")
 
 
-taskcluster_permacreds = set([
-    'client-id-alias:permacred-garndt',
-    'client-id-alias:permacred-jhford',
-    'client-id-alias:permacred-jonasfj',
-    'client-id-alias:permacred-selena',
-    'client-id-alias:permacred-wcosta',
-    'client-id-alias:permacred-pmoore',
-])
-
-releng_permacreds = set([
-    'client-id-alias:permacred-bhearsum',
-    'client-id-alias:permacred-dustin',
-    'client-id-alias:permacred-jlund',
-    'client-id-alias:permacred-mrrrgn',
-    'client-id-alias:permacred-mshal',
-    'client-id-alias:permacred-rail',
-    'client-id-alias:permacred-rthijssen',
-])
-
-# TODO: only look at scopes for client-id:*, not extendedScopes
-#   -> should eliminate many trusted clients, too
+def expandRole(roleId):
+    """Return the given role along with all roles that assume it"""
+    return set([roleId] + [r.roleId for r in roles[roleId].assumedBy])

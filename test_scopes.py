@@ -6,8 +6,8 @@ changes in those lists.
 """
 
 from common import assertPrincipalsWithScope
-from common import releng_permacreds
-from common import taskcluster_permacreds
+from common import expandRole
+
 
 def test_signing():
     assertPrincipalsWithScope("signing:*", [
@@ -18,16 +18,12 @@ def test_signing():
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
-
-        # people
-        releng_permacreds,
-        taskcluster_permacreds,
+        'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        'mozilla-group:releng',
-        'mozilla-group:team_relops',
-        'mozilla-group:team_taskcluster',
+        expandRole('mozilla-group:releng'),
+        expandRole('mozilla-group:team_relops'),
+        expandRole('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -38,16 +34,12 @@ def test_bbb():
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
-
-        # people
-        releng_permacreds,
-        taskcluster_permacreds,
+        'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        'mozilla-group:releng',
-        'mozilla-group:team_relops',
-        'mozilla-group:team_taskcluster',
+        expandRole('mozilla-group:releng'),
+        expandRole('mozilla-group:team_relops'),
+        expandRole('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -61,17 +53,14 @@ def test_bbb_tasks():
 
         # services
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
-
-        # people
-        releng_permacreds,
-        taskcluster_permacreds,
+        'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        'mozilla-group:releng',
-        'mozilla-group:team_relops',
-        'mozilla-group:team_taskcluster',
+        expandRole('mozilla-group:releng'),
+        expandRole('mozilla-group:team_relops'),
+        expandRole('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
+
 
 def test_bbb_worker():
     """Access to the Buildbot Bridge provisioner-id/worker-type allows
@@ -85,20 +74,18 @@ def test_bbb_worker():
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         'client-id-alias:mozilla-pulse-actions',  # armen's thing
         'client-id:bbb-scheduler',
 
         # people
-        releng_permacreds,
-        taskcluster_permacreds,
         'client-id:adusca-development',
 
         # user groups
-        'mozilla-group:releng',
-        'mozilla-group:team_relops',
-        'mozilla-group:team_taskcluster',
+        expandRole('mozilla-group:releng'),
+        expandRole('mozilla-group:team_relops'),
+        expandRole('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -114,10 +101,9 @@ def test_balrog_vpn():
         'client-id:root',
 
         # CI testing
-        'client-id-alias:worker-ci-tests', # docker-worker integration tests
+        'client-id-alias:worker-ci-tests',  # docker-worker integration tests
 
         # repos
-        'mozilla-group:scm_level_3',
         'moz-tree:level:3',
         'repo:hg.mozilla.org/integration/b2g-inbound:*',
         'repo:hg.mozilla.org/integration/fx-team:*',
@@ -128,31 +114,24 @@ def test_balrog_vpn():
         'repo:hg.mozilla.org/releases/mozilla-b2g44_v2_5:*',
 
         # AWS workers
-        'worker-type:aws-provisioner-v1/*', # Bug 1233555
-        'client-id-alias:testdroid-worker', # Bug 1218549
+        'worker-type:aws-provisioner-v1/*',  # Bug 1233555
+        'client-id-alias:testdroid-worker',  # Bug 1218549
 
         # services
         'client-id-alias:funsize-dev',
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
-        'client-id-alias:scheduler-taskcluster-net', # Bug 1218541
+        'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
         'client-id:aws-provisioner',  # Bug 1233555
 
         # people
-        releng_permacreds,
-        taskcluster_permacreds,
-        'client-id-alias:permacred-armenzg',
-        'client-id-alias:permacred-armenzg-testing',
-        'client-id-alias:permacred-nhirata',
-        'client-id-alias:permacred-ted',
-        'client-id-alias:temporary-credentials',  # Bug 1233553
-        'client-id:gandalf',
         'client-id:dustin-docker-dev',
 
         # user groups
-        'mozilla-group:releng',
-        'mozilla-group:team_relops',
-        'mozilla-group:team_taskcluster',
+        expandRole('mozilla-group:scm_level_3'),
+        expandRole('mozilla-group:releng'),
+        expandRole('mozilla-group:team_relops'),
+        expandRole('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
