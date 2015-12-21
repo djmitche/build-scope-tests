@@ -138,7 +138,7 @@ def assertPrincipalsWithRole(roleId, principals, exactMatch=True, omitTrusted=Fa
     if not exactMatch:
         return assertPrincipalsWithScope('assume:' + roleId, principals,
                                          omitTrusted=omitTrusted)
-    got = _nicer(expandRole(roleId)) - set([roleId])
+    got = _nicer(principalsWith(roleId)) - set([roleId])
     exp = _nicer(set(_flatten(principals)))
     if omitTrusted:
         got -= _trusted_clients
@@ -161,6 +161,6 @@ def assertScopesWithPrefix(prefix, expectedScopes):
         got, exp, "Got (+) a scope set different from expected (-):")
 
 
-def expandRole(roleId):
+def principalsWith(roleId):
     """Return the given role along with all roles that assume it"""
     return set([roleId] + [r.roleId for r in roles[roleId].assumedBy])

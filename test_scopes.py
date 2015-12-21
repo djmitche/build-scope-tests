@@ -6,7 +6,7 @@ changes in those lists.
 """
 
 from common import assertPrincipalsWithScope
-from common import expandRole
+from common import principalsWith
 
 
 def test_signing():
@@ -21,9 +21,9 @@ def test_signing():
         'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        expandRole('mozilla-group:releng'),
-        expandRole('mozilla-group:team_relops'),
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:releng'),
+        principalsWith('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -37,9 +37,9 @@ def test_bbb():
         'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        expandRole('mozilla-group:releng'),
-        expandRole('mozilla-group:team_relops'),
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:releng'),
+        principalsWith('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -56,9 +56,9 @@ def test_bbb_tasks():
         'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
 
         # user groups
-        expandRole('mozilla-group:releng'),
-        expandRole('mozilla-group:team_relops'),
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:releng'),
+        principalsWith('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -83,9 +83,9 @@ def test_bbb_worker():
         'client-id:adusca-development',
 
         # user groups
-        expandRole('mozilla-group:releng'),
-        expandRole('mozilla-group:team_relops'),
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:releng'),
+        principalsWith('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -127,10 +127,10 @@ def test_balrog_vpn():
         'client-id:dustin-docker-dev',
 
         # user groups
-        expandRole('mozilla-group:scm_level_3'),
-        expandRole('mozilla-group:releng'),
-        expandRole('mozilla-group:team_relops'),
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:scm_level_3'),
+        principalsWith('mozilla-group:releng'),
+        principalsWith('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 

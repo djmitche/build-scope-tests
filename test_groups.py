@@ -1,10 +1,10 @@
 """
 Tests for members of user groups.  With these tests in place, we can
-safely use expandRole(..) elsewhere.
+safely use principalsWith(..) elsewhere.
 """
 
 from common import assertPrincipalsWithRole
-from common import expandRole
+from common import principalsWith
 
 taskcluster_permacreds = set([
     'client-id-alias:permacred-dustin',
@@ -36,10 +36,10 @@ def test_releng():
         releng_permacreds,
 
         # plus team_relops, because they're OK too
-        expandRole('mozilla-group:team_relops'),
+        principalsWith('mozilla-group:team_relops'),
 
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -48,7 +48,7 @@ def test_relops():
         relops_permacreds,
 
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -64,10 +64,10 @@ def test_moco():
 
         # everyone with a legacy permacred is considered an honorary moco
         # employee
-        expandRole('legacy-permacred'),
+        principalsWith('legacy-permacred'),
 
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -88,14 +88,14 @@ def test_scm_level_1():
         'client-id-alias:sousmangoosta',
 
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
 def test_scm_level_2():
     assertPrincipalsWithRole('mozilla-group:scm_level_2', [
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)
 
 
@@ -115,5 +115,5 @@ def test_scm_level_3():
         'client-id:gandalf',
 
         # taskcluster folks have *, hence matching this group
-        expandRole('mozilla-group:team_taskcluster'),
+        principalsWith('mozilla-group:team_taskcluster'),
     ], omitTrusted=True)

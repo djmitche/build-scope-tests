@@ -11,26 +11,26 @@ secondary layer of security.
 
 from common import assertPrincipalsWithScope
 from common import assertScopesWithPrefix
-from common import expandRole
+from common import principalsWith
 
 
 def test_relengapi_tooltool_download():
     """Docker-worker allows tooltool download permissions, for public or internal files, to repositories
     at all SCM levels including SCM level 1 (try).  This is necessary to build Firefox for Android, which
     requires non-public SDK and NDK bits."""
-    print expandRole('mozilla-group:scm_level_1'), 'moz-tree:level:1',
+    print principalsWith('mozilla-group:scm_level_1'), 'moz-tree:level:1',
     for lvl in 'public', 'internal':
         assertPrincipalsWithScope("docker-worker:relengapi-proxy:tooltool.download." + lvl, [
             # trees
-            expandRole('moz-tree:level:1'),
-            expandRole('moz-tree:level:2'),
-            expandRole('moz-tree:level:3'),
+            principalsWith('moz-tree:level:1'),
+            principalsWith('moz-tree:level:2'),
+            principalsWith('moz-tree:level:3'),
 
             # permacreds used to download builds on bitbar
             'client-id-alias:testdroid-worker',
 
             # user groups that list the permission explicitly
-            expandRole('mozilla-group:releng'),
+            principalsWith('mozilla-group:releng'),
 
             # services
             'client-id-alias:funsize-dev',

@@ -3,7 +3,7 @@ Tests for access to the moz-tree:level:* roles
 """
 
 from common import assertPrincipalsWithRole
-from common import expandRole
+from common import principalsWith
 
 l1_repos = [
     'repo:hg.mozilla.org/try:*',
@@ -29,7 +29,7 @@ l3_repos = [
 def test_tree_level_3():
     assertPrincipalsWithRole('moz-tree:level:3', [
         # level-3 people and repos
-        expandRole('mozilla-group:scm_level_3'), l3_repos,
+        principalsWith('mozilla-group:scm_level_3'), l3_repos,
 
         # CI testing
         'client-id:dustin-docker-dev',
@@ -48,13 +48,13 @@ def test_tree_level_3():
 def test_tree_level_2():
     assertPrincipalsWithRole('moz-tree:level:2', [
         # level 3, plus level-2 people and repos
-        expandRole('mozilla-group:scm_level_2'), l2_repos,
-        expandRole('moz-tree:level:3'),
+        principalsWith('mozilla-group:scm_level_2'), l2_repos,
+        principalsWith('moz-tree:level:3'),
     ], omitTrusted=True)
 
 def test_tree_level_1():
     assertPrincipalsWithRole('moz-tree:level:1', [
         # level 2, plus level-2 people and repos
-        expandRole('mozilla-group:scm_level_1'), l1_repos,
-        expandRole('moz-tree:level:2'),
+        principalsWith('mozilla-group:scm_level_1'), l1_repos,
+        principalsWith('moz-tree:level:2'),
     ], omitTrusted=True)
