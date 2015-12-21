@@ -92,6 +92,9 @@ _trusted_clients = set([
     # issues temporary credentials to users based on their username and group
     # membership (`mozilla-user:*` and `mozilla-group:*`)
     'client-id:tc-login',
+
+    # The aws-provisioner issues credentials to workers when it instantiates them
+    'client-id:aws-provisioner',
 ])
 
 # flatten down to a list of strings

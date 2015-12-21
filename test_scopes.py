@@ -122,7 +122,6 @@ def test_balrog_vpn():
         'client-id-alias:funsize-scheduler',
         'client-id-alias:release-runner-dev',
         'client-id-alias:scheduler-taskcluster-net',  # Bug 1218541
-        'client-id:aws-provisioner',  # Bug 1233555
 
         # people
         'client-id:dustin-docker-dev',

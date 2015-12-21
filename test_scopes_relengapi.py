@@ -33,7 +33,6 @@ def test_relengapi_tooltool_download():
             expandRole('mozilla-group:releng'),
 
             # services
-            'client-id:aws-provisioner',
             'client-id-alias:funsize-dev',
             'client-id-alias:funsize-scheduler',
             'client-id-alias:release-runner-dev',
