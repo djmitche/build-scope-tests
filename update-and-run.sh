@@ -8,4 +8,5 @@ set -e
 cd /usr/src/app
 git fetch https://github.com/mozilla/build-scope-tests master
 git reset --hard FETCH_HEAD
+pip install -r requirements.txt
 nosetests
