@@ -18,9 +18,13 @@ def _starmatch(x, y):
 
 class Role(object):
 
-    def __init__(self, r):
+    def __init__(self, r, roles):
         self.roleId = r['roleId']
         self.scopes = r['scopes']
+        self.roles = roles
+
+        # keep the expanded scopes from the auth component, just to
+        # double-check in test_gather_matches_prod.py
         self.authExpandedScopes = r['expandedScopes']
 
         self.children = []
@@ -50,12 +54,23 @@ class Role(object):
                 accumulator.add(p)
                 p._assumesIterator(accumulator)
 
-    @memoized_property
+    @property #@memoized_property
     def expandedScopes(self):
         scopes = set(self.scopes)
-        scopes.add('assume:' + self.roleId)
+        if self.roleId[-1] != '*':
+            scopes.add('assume:' + self.roleId)
         for r in self.assumes:
             scopes |= set(r.scopes)
+
+        # include expanded scopes for any roles that are a *-prefix match for
+        # this one, but only for *-suffixed roles
+        if self.roleId[-1] != '*':
+            for roleId, role in self.roles.roles.iteritems():
+                if roleId == self.roleId:
+                    continue
+                if roleId[-1] == '*' and self.roleId.startswith(roleId[:-1]):
+                    scopes |= role.expandedScopes
+
         # normalize (slowly)
         rv = set()
         for scope in scopes:
@@ -73,7 +88,7 @@ class Roles(object):
 
     def load(self):
         roles = auth.listRoles()
-        self.roles = {r['roleId']: Role(r) for r in roles}
+        self.roles = {r['roleId']: Role(r, self) for r in roles}
 
         # connect all of the parent and child relationships between roles, including
         # star expansion of roles

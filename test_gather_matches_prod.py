@@ -4,11 +4,9 @@ used in production
 """
 
 from nose.tools import assert_equal
-from nose.plugins.skip import SkipTest
 import gather
 
 def test_matches():
-    raise SkipTest("Bug 1220295")
     roles = gather.Roles()
 
     def _test(roleId):

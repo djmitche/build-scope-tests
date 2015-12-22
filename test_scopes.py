@@ -115,6 +115,8 @@ def test_balrog_vpn():
 
         # AWS workers
         'worker-type:aws-provisioner-v1/*',  # Bug 1233555
+        'worker-type:aws-provisioner-v1/gaia-decision',  # Bug 1233555
+        'worker-type:aws-provisioner-v1/gecko-decision',  # Bug 1233555
         'client-id-alias:testdroid-worker',  # Bug 1218549
 
         # services

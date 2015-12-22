@@ -40,6 +40,8 @@ def test_relengapi_tooltool_download():
 
             # worker types
             'worker-type:aws-provisioner-v1/*',  # Bug 1233555
+            'worker-type:aws-provisioner-v1/gaia-decision',  # Bug 1233555
+            'worker-type:aws-provisioner-v1/gecko-decision',  # Bug 1233555
 
             # root
             'client-id:root',
